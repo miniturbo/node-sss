@@ -4,13 +4,18 @@ $(function() {
         socket.send({ cookie: document.cookie });
     });
 
-    $('#next').click(function() {
-        socket.send({ type: 'action', method: 'next' });
+    $('#next .button').click(function() {
+        socket.send({ type: 'remote', detail: 'next' });
         return false;
     });
 
-    $('#prev').click(function() {
-        socket.send({ type: 'action', method: 'prev' });
+    $('#prev .button').click(function() {
+        socket.send({ type: 'remote', detail: 'prev' });
+        return false;
+    });
+
+    $('#sync .button').click(function() {
+        socket.send({ type: 'remote', detail: 'sync', value: $('#sync > input').val() });
         return false;
     });
 
