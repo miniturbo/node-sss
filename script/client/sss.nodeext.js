@@ -21,27 +21,48 @@ SSS.NodeExtension = SSS.util.class.create({
 
     _prepareSocket: function() {
         var that = this;
+
         this.socket = new io.Socket(this.host, { port: this.port });
         this.socket.on('connect', function() {
-            that.socket.send({ cookie: document.cookie });
+            that.socket.send({ type: 'notifyPageIndex', value: that.pr.currentIndex });
         });
-        this.socket.on('message', function(data) {
-            if (!data || !data.method) return;
 
-            that.run(data);
+        this.socket.on('message', function(data) {
+            if (!data) return;
+
+            if (data.type === 'remote' && data.detail) {
+                that.remote(data.detail, data.value);
+            }
+
+            if (data.type === 'notifyClientIndex') {
+                that.setClientIndex(data.value);
+            }
         });
+
+        SSS.util.event.addListener(window, 'SSSPresentationChangePage', function(event, pr) {
+            that.socket.send({ type: 'notifyPageIndex', value: pr.currentIndex });
+        });
+
+        // event listener
         this.socket.connect();
     },
 
-    run: function(data) {
-        switch (data.type) {
+    remote: function(detail, value) {
+        switch (detail) {
             case 'next':
                 this.pr.next();
                 break;
             case 'prev':
                 this.pr.prev();
                 break;
+            case 'sync':
+                this.pr.go(value);
+                break;
         }
+    },
+
+    setClientIndex: function(index) {
+        this.index = index;
     }
 });
 SSS.NodeExtension = SSS.util.class.singleton(SSS.NodeExtension);
