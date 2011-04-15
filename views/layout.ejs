@@ -1,0 +1,14 @@
+<html>
+<head>
+    <title>SSS Controller</title>
+<% if (session.verified) { %>
+    <script type="text/javascript" src="/socket.io/socket.io.js"></script>
+    <script type="text/javascript" src="/js/lib/jquery.js"></script>
+    <script type="text/javascript" src="/js/src/client.js"></script>
+<% } %>
+</head>
+
+<body>
+<%- body %>
+</body>
+</html>
