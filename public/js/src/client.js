@@ -5,12 +5,12 @@ $(function() {
     });
 
     $('#next').click(function() {
-        socket.send({ type: 'next' });
+        socket.send({ method: 'next' });
         return false;
     });
 
     $('#prev').click(function() {
-        socket.send({ type: 'prev' });
+        socket.send({ method: 'prev' });
         return false;
     });
 
