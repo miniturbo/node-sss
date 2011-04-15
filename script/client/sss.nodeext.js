@@ -7,6 +7,16 @@ SSS.NodeExtension = SSS.util.class.create({
 
         this.pr = new SSS.Presentation();
 
+        $('<div id="nodeext-container"></div>')
+            .css({
+                margin: '0.1em 0.2em',
+                position: 'fixed', top: 0, right: 0, zIndex: 100,
+                color: '#888', fontSize: '300%', fontWeight: 'bold',
+                opacity: '0.3',
+            })
+            .insertAfter(this.pr.container);
+        this.container = $('#nodeext-container')[0];
+
         var socketIoUrl = this._buildSocketIoUrl();
         $.getScript(socketIoUrl, function() {
             that._prepareSocket();
@@ -63,6 +73,7 @@ SSS.NodeExtension = SSS.util.class.create({
 
     setClientIndex: function(index) {
         this.index = index;
+        $(this.container).text(index);
     }
 });
 SSS.NodeExtension = SSS.util.class.singleton(SSS.NodeExtension);
